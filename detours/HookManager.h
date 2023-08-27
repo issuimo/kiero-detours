@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <unordered_map>
 #include <mutex>
+#include <ranges>
 #include <Windows.h>
 #include "detours.h"
 
