@@ -1,4 +1,8 @@
 ﻿#pragma once
+
+#ifndef _DETOURS_HOOKMANAGER_
+#define _DETOURS_HOOKMANAGER_
+
 #include <unordered_map>
 #include <mutex>
 #include <ranges>
@@ -52,43 +56,7 @@ public:
 
 		return RType();
 	}
-
-	template <typename RType, typename... Params>
-	inline static auto ccall(RType (__cdecl*handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
-
-		return RType();
-	}
-
-	template <typename RType, typename... Params>
-	inline static auto scall(RType (__stdcall*handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
-
-		return RType();
-	}
-
-	template <typename RType, typename... Params>
-	inline static auto fcall(RType (__fastcall*handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
-
-		return RType();
-	}
-
-	template <typename RType, typename... Params>
-	inline static auto vcall(RType (__vectorcall*handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
-
-		return RType();
-	}
-
+	
 	static auto detachAll() noexcept -> void {
 		std::lock_guard map(lock);
 		for (const auto& key : holderMap | std::views::keys) {
@@ -120,3 +88,4 @@ private:
 	}
 };
 
+#endif
